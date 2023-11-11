@@ -22,17 +22,12 @@
     <string name="no_item_description">Nothing to see here.\nTap + to add movies!</string>
     <string name="edit_item_title">Edit Movie</string>
     <string name="item">Movie</string>
-    <string name="item_detail_title">Movie Details</string>
     <string name="item_entry_title">Add Movie</string>
-    <string name="item_name_req">Movie Name*</string>
-    <string name="item_price_req">Movie Rating*</string>
+    <string name="item_name_req">Title*</string>
+    <string name="item_price_req">Rating</string>
     <string name="no">No</string>
     <string name="price">Price</string>
-    <string name="quantity_in_stock">Quantity in stock</string>
-    <string name="in_stock">%d in stock</string>
-    <string name="quantity_req">Quantity in Stock*</string>
     <string name="save_action">Save</string>
-    <string name="sell">Sell</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
 </resources>
