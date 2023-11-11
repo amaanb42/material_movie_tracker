@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -181,6 +182,7 @@ fun ItemInputForm(
         OutlinedTextField(
             value = itemDetails.name,
             onValueChange = { onValueChange(itemDetails.copy(name = it)) },
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
             label = { Text(stringResource(R.string.item)) },
 //            colors = OutlinedTextFieldDefaults.colors(
 //                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
