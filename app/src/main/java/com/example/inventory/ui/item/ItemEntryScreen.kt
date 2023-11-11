@@ -182,11 +182,11 @@ fun ItemInputForm(
             value = itemDetails.name,
             onValueChange = { onValueChange(itemDetails.copy(name = it)) },
             label = { Text(stringResource(R.string.item)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             shape = roundedCornerShape,
             enabled = enabled,
@@ -197,11 +197,11 @@ fun ItemInputForm(
             onValueChange = { onValueChange(itemDetails.copy(price = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.item_price_req)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+//            ),
             modifier = Modifier.fillMaxWidth(),
             shape = roundedCornerShape,
             enabled = enabled,
