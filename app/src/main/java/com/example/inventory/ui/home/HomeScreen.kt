@@ -72,7 +72,7 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
-    navigateToItemUpdate: (Int) -> Unit,
+    navigateToEditItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -103,7 +103,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
-            onItemClick = navigateToItemUpdate,
+            onItemClick = navigateToEditItem,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
