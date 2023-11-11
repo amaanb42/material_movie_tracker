@@ -19,7 +19,7 @@
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Are you sure you want to remove this movie?</string>
-    <string name="no_item_description">Nothing to see here.\nTap + to start adding movies!</string>
+    <string name="no_item_description">Nothing to see here.\nTap + to add movies!</string>
     <string name="edit_item_title">Edit Movie</string>
     <string name="item">Movie</string>
     <string name="item_detail_title">Movie Details</string>

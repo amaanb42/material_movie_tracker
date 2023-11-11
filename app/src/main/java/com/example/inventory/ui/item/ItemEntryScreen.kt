@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -73,16 +74,6 @@ fun ItemEntryScreen(
         ItemEntryBody(
             itemUiState = viewModel.itemUiState,
             onItemValueChange = viewModel::updateUiState,
-            onDelete = {
-                // Note: If the user rotates the screen very fast, the operation may get cancelled
-                // and the item may not be deleted from the Database. This is because when config
-                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
-                // be cancelled - since the scope is bound to composition.
-                coroutineScope.launch {
-                    viewModel.deleteItem()
-                    navigateBack()
-                }
-            },
             onSaveClick = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be saved in the Database. This is because when config
@@ -90,6 +81,17 @@ fun ItemEntryScreen(
                 // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
                     viewModel.saveItem()
+                    navigateBack()
+                }
+            },
+            showDeleteButton = false,
+            onDelete = {
+                // Note: If the user rotates the screen very fast, the operation may get cancelled
+                // and the item may not be deleted from the Database. This is because when config
+                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
+                // be cancelled - since the scope is bound to composition.
+                coroutineScope.launch {
+                    viewModel.deleteItem()
                     navigateBack()
                 }
             },
@@ -105,8 +107,9 @@ fun ItemEntryScreen(
 fun ItemEntryBody(
     itemUiState: ItemUiState,
     onItemValueChange: (ItemDetails) -> Unit,
-    onDelete: () -> Unit,
     onSaveClick: () -> Unit,
+    showDeleteButton: Boolean,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -126,13 +129,15 @@ fun ItemEntryBody(
         ) {
             Text(text = stringResource(R.string.save_action))
         }
-        Button(
-            onClick = onDelete,
-            enabled = itemUiState.isEntryValid,
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(R.string.delete))
+        if (showDeleteButton) {
+            Button(
+                onClick = onDelete,
+                enabled = itemUiState.isEntryValid,
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.delete))
+            }
         }
     }
 }
@@ -208,6 +213,6 @@ private fun ItemEntryScreenPreview() {
             ItemDetails(
                 name = "Item name", price = "10.00", quantity = "5"
             )
-        ), onItemValueChange = {}, onDelete = {},onSaveClick = {})
+        ), onItemValueChange = {},onSaveClick = {}, onDelete = {}, showDeleteButton = false)
     }
 }

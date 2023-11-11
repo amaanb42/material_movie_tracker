@@ -19,6 +19,7 @@ package com.example.inventory.ui.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,7 +48,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -58,6 +58,8 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.item.formattedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
+import androidx.compose.foundation.layout.fillMaxHeight
+
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -120,11 +122,17 @@ private fun HomeBody(
         modifier = modifier
     ) {
         if (itemList.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_item_description),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge
-            )
+            Box(
+                modifier = Modifier.fillMaxHeight(),
+                contentAlignment = Alignment.Center // This centers the content vertically
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally // This aligns the text to the center horizontally
+                ) {
+                    Text(text = stringResource(R.string.no_item_description), style = MaterialTheme.typography.titleLarge)
+                }
+            }
         } else {
             InventoryList(
                 itemList = itemList,
