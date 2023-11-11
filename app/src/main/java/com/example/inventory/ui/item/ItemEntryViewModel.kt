@@ -75,7 +75,6 @@ data class ItemDetails(
     val id: Int = 0,
     val name: String = "",
     val price: String = "",
-//    val quantity: String = "",
 )
 
 /**
@@ -89,9 +88,20 @@ fun ItemDetails.toItem(): Item = Item(
     price = price.toDoubleOrNull() ?: 0.0,
 )
 
+//fun Item.formattedPrice(): String {
+//    return price.toString()
+//}
+
 fun Item.formattedPrice(): String {
-    return price.toString()
+    // Assuming 'price' is a Double
+    return if (price == 0.0) {
+        "-"
+    } else {
+        price.toString()
+    }
 }
+
+
 
 /**
  * Extension function to convert [Item] to [ItemUiState]
