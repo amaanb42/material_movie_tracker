@@ -73,6 +73,16 @@ fun ItemEntryScreen(
         ItemEntryBody(
             itemUiState = viewModel.itemUiState,
             onItemValueChange = viewModel::updateUiState,
+            onDelete = {
+                // Note: If the user rotates the screen very fast, the operation may get cancelled
+                // and the item may not be deleted from the Database. This is because when config
+                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
+                // be cancelled - since the scope is bound to composition.
+                coroutineScope.launch {
+                    viewModel.deleteItem()
+                    navigateBack()
+                }
+            },
             onSaveClick = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be saved in the Database. This is because when config
@@ -95,6 +105,7 @@ fun ItemEntryScreen(
 fun ItemEntryBody(
     itemUiState: ItemUiState,
     onItemValueChange: (ItemDetails) -> Unit,
+    onDelete: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -114,6 +125,14 @@ fun ItemEntryBody(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = stringResource(R.string.save_action))
+        }
+        Button(
+            onClick = onDelete,
+            enabled = itemUiState.isEntryValid,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(R.string.delete))
         }
     }
 }
@@ -189,6 +208,6 @@ private fun ItemEntryScreenPreview() {
             ItemDetails(
                 name = "Item name", price = "10.00", quantity = "5"
             )
-        ), onItemValueChange = {}, onSaveClick = {})
+        ), onItemValueChange = {}, onDelete = {},onSaveClick = {})
     }
 }

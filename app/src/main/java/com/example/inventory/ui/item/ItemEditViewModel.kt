@@ -23,8 +23,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.ItemsRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -61,6 +65,10 @@ class ItemEditViewModel(
         }
     }
 
+    suspend fun deleteItem() {
+        itemsRepository.deleteItem(itemUiState.itemDetails.toItem())
+    }
+
     /**
      * Updates the [itemUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
@@ -72,7 +80,7 @@ class ItemEditViewModel(
 
     private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            name.isNotBlank() /*&& price.isNotBlank() && quantity.isNotBlank()*/
         }
     }
 }

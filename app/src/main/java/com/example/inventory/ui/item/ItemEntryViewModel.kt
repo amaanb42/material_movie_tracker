@@ -52,6 +52,10 @@ class ItemEntryViewModel(private val itemsRepository: ItemsRepository) : ViewMod
         }
     }
 
+    suspend fun deleteItem() {
+        itemsRepository.deleteItem(itemUiState.itemDetails.toItem())
+    }
+
     private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
         return with(uiState) {
             name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
