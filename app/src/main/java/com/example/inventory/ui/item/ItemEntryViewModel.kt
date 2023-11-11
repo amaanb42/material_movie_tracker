@@ -22,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.inventory.data.Item
 import com.example.inventory.data.ItemsRepository
-import java.text.NumberFormat
 
 /**
  * ViewModel to validate and insert items in the Room database.
@@ -87,8 +86,8 @@ fun ItemDetails.toItem(): Item = Item(
     quantity = quantity.toIntOrNull() ?: 0
 )
 
-fun Item.formatedPrice(): String {
-    return NumberFormat.getCurrencyInstance().format(price)
+fun Item.formattedPrice(): String {
+    return price.toString()
 }
 
 /**
