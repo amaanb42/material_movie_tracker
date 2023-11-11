@@ -24,7 +24,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.inventory.InventoryApplication
 import com.example.inventory.ui.home.HomeViewModel
-import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.item.ItemEntryViewModel
 
@@ -43,14 +42,6 @@ object AppViewModelProvider {
         // Initializer for ItemEntryViewModel
         initializer {
             ItemEntryViewModel(inventoryApplication().container.itemsRepository)
-        }
-
-        // Initializer for ItemDetailsViewModel
-        initializer {
-            ItemDetailsViewModel(
-                this.createSavedStateHandle(),
-                inventoryApplication().container.itemsRepository
-            )
         }
 
         // Initializer for HomeViewModel
