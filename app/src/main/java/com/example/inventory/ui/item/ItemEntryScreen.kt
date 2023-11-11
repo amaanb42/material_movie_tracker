@@ -115,6 +115,7 @@ fun ItemEntryBody(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val roundedCornerShape = RoundedCornerShape(16.dp) // You can adjust the corner size as needed
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
@@ -122,12 +123,12 @@ fun ItemEntryBody(
         ItemInputForm(
             itemDetails = itemUiState.itemDetails,
             onValueChange = onItemValueChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().background(Color.Transparent, roundedCornerShape)
         )
         Button(
             onClick = onSaveClick,
             enabled = itemUiState.isEntryValid,
-            shape = MaterialTheme.shapes.small,
+            shape = roundedCornerShape,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = stringResource(R.string.save_action))
@@ -136,7 +137,7 @@ fun ItemEntryBody(
             Button(
                 onClick = onDelete,
                 enabled = itemUiState.isEntryValid,
-                shape = MaterialTheme.shapes.small,
+                shape = roundedCornerShape,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = stringResource(R.string.delete))
@@ -153,6 +154,7 @@ fun ItemInputForm(
     onValueChange: (ItemDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
+    val roundedCornerShape = RoundedCornerShape(16.dp)
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
@@ -167,6 +169,7 @@ fun ItemInputForm(
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
+            shape = roundedCornerShape,
             enabled = enabled,
             singleLine = true
         )
@@ -182,15 +185,10 @@ fun ItemInputForm(
             ),
             leadingIcon = { Text(Currency.getInstance(Locale.getDefault()).symbol) },
             modifier = Modifier.fillMaxWidth(),
+            shape = roundedCornerShape,
             enabled = enabled,
             singleLine = true
         )
-        if (enabled) {
-            Text(
-                text = stringResource(R.string.required_fields),
-                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
-            )
-        }
     }
 }
 

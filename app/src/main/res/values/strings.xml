@@ -23,7 +23,6 @@
     <string name="edit_item_title">Edit Movie</string>
     <string name="item">Movie</string>
     <string name="item_entry_title">Add Movie</string>
-    <string name="item_name_req">Title*</string>
     <string name="item_price_req">Rating</string>
     <string name="no">No</string>
     <string name="price">Price</string>
