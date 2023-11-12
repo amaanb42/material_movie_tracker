@@ -16,6 +16,7 @@
 
 package com.example.inventory.ui.item
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -58,6 +61,14 @@ import com.example.inventory.ui.theme.InventoryTheme
 import com.example.inventory.ui.theme.theme_delete_button
 import com.example.inventory.ui.theme.theme_save_button
 import kotlinx.coroutines.launch
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import android.widget.Toast
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+
 
 object ItemEntryDestination : NavigationDestination {
     override val route = "item_entry"
@@ -72,7 +83,9 @@ fun ItemEntryScreen(
     canNavigateBack: Boolean = true,
     viewModel: ItemEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    var showToast by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             InventoryTopAppBar(
@@ -90,10 +103,15 @@ fun ItemEntryScreen(
                 // and the item may not be saved in the Database. This is because when config
                 // change occurs, the Activity will be recreated and the rememberCoroutineScope will
                 // be cancelled - since the scope is bound to composition.
-                coroutineScope.launch {
-                    viewModel.saveItem()
-                    navigateBack()
+                if (!isRatingValid(viewModel.itemUiState.itemDetails.price)) {
+                    showToast = true
+                } else {
+                    coroutineScope.launch {
+                        viewModel.saveItem()
+                        navigateBack()
+                    }
                 }
+
             },
             showDeleteButton = false,
             onDelete = {
@@ -112,7 +130,14 @@ fun ItemEntryScreen(
                 .fillMaxWidth()
         )
     }
+    if (showToast) {
+        LaunchedEffect(key1 = Unit) {
+            showToast(context, "Rating must be between 1.0 and 10.0")
+            showToast = false // Reset the state after showing the toast
+        }
+    }
 }
+
 
 @Composable
 fun ItemEntryBody(
@@ -242,3 +267,15 @@ private fun ItemEntryScreenPreview() {
         ), onItemValueChange = {},onSaveClick = {}, onDelete = {}, showDeleteButton = false)
     }
 }
+
+// Function to check if rating is valid
+private fun isRatingValid(price: String): Boolean {
+    val numericPrice = price.toDoubleOrNull()
+    return numericPrice != null && numericPrice in 1.0..10.0
+}
+
+// Function to show toast if rating invalid
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
