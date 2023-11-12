@@ -188,7 +188,7 @@ private fun InventoryItem(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = item.formattedRating() + "/10",
+                    text = item.formattedRating(),
                     style = MaterialTheme.typography.titleSmall
                 )
             }
