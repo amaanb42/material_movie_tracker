@@ -17,7 +17,6 @@
 package com.example.inventory.ui.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -62,7 +61,6 @@ import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import com.example.inventory.ui.theme.Pine
