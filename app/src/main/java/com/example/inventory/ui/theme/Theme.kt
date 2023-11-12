@@ -127,7 +127,6 @@ fun InventoryTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        shapes = Shapes,
         content = content
     )
 }
