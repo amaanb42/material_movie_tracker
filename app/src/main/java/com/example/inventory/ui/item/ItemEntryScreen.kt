@@ -269,7 +269,7 @@ private fun ItemEntryScreenPreview() {
 }
 
 // Function to check if rating is valid
-private fun isRatingValid(price: String): Boolean {
+public fun isRatingValid(price: String): Boolean {
     val numericPrice = price.toDoubleOrNull()
     return numericPrice != null && numericPrice in 1.0..10.0
 }

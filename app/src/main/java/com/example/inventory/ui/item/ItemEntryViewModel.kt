@@ -93,13 +93,19 @@ fun ItemDetails.toItem(): Item = Item(
 //}
 
 fun Item.formattedRating(): String {
-    // Assuming 'price' is a Double
-    return if (price == 0.0) {
-        "-"
+    // Check if the price is 0.0, return "-"
+    if (price == 0.0) {
+        return "-"
+    }
+
+    // Check if the price ends in .0, if so, format it as an integer
+    return if (price % 1.0 == 0.0) {
+        price.toInt().toString()
     } else {
         price.toString()
     }
 }
+
 
 
 
