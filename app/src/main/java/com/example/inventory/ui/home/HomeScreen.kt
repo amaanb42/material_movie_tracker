@@ -19,6 +19,7 @@ package com.example.inventory.ui.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,7 +61,10 @@ import com.example.inventory.ui.item.formattedRating
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
 import com.example.inventory.ui.theme.Pine
 import com.example.inventory.ui.theme.Text100
 import com.example.inventory.ui.theme.theme_cards
@@ -156,31 +160,42 @@ private fun InventoryList(
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemList, key = { it.id }) { item ->
-            InventoryItem(item = item,
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(item) })
+            InventoryItem(
+                item = item,
+                onItemClick = { onItemClick(item) },
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+            )
         }
     }
 }
 
 @Composable
 private fun InventoryItem(
-    item: Item, modifier: Modifier = Modifier
+    item: Item,
+    onItemClick: (Item) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val shape = RoundedCornerShape(8.dp)
+    val interactionSource = remember { MutableInteractionSource() }
+    val ripple = rememberRipple(bounded = true)
+
     Card(
-        modifier = modifier,
-        //elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(theme_cards)
+        shape = shape,
+        colors = CardDefaults.cardColors(theme_cards),
+        modifier = modifier
+            .clip(shape) // Clip to the shape
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple,
+                onClick = { onItemClick(item) }
+            )
     ) {
         Column(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = item.name,
@@ -195,6 +210,8 @@ private fun InventoryItem(
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
@@ -219,7 +236,10 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     InventoryTheme {
         InventoryItem(
-            Item(1, "Game", 10.0),
+            item = Item(1, "Game", 10.0),
+            onItemClick = {}, // Since it's a preview, the lambda does nothing
+            modifier = Modifier // Default modifier
         )
     }
 }
+
