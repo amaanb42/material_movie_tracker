@@ -123,7 +123,7 @@ fun ItemEntryBody(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val roundedCornerShape = RoundedCornerShape(16.dp) // You can adjust the corner size as needed
+    val roundedCornerShape = RoundedCornerShape(8.dp) // You can adjust the corner size as needed
 
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -177,7 +177,7 @@ fun ItemInputForm(
     onValueChange: (ItemDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
-    val roundedCornerShape = RoundedCornerShape(16.dp)
+    val roundedCornerShape = RoundedCornerShape(8.dp)
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
@@ -202,11 +202,6 @@ fun ItemInputForm(
             onValueChange = { onValueChange(itemDetails.copy(price = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.item_price_req)) },
-//            colors = OutlinedTextFieldDefaults.colors(
-//                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-//            ),
             modifier = Modifier.fillMaxWidth(),
             shape = roundedCornerShape,
             enabled = enabled,
