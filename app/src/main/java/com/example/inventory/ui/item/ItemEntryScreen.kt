@@ -55,6 +55,8 @@ import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.theme_delete_button
+import com.example.inventory.ui.theme.theme_save_button
 import kotlinx.coroutines.launch
 
 object ItemEntryDestination : NavigationDestination {
@@ -139,7 +141,8 @@ fun ItemEntryBody(
             onClick = onSaveClick,
             enabled = itemUiState.isEntryValid,
             shape = roundedCornerShape,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(theme_save_button, contentColor = Color.White)
         ) {
             Text(text = stringResource(R.string.save_action))
         }
@@ -149,7 +152,7 @@ fun ItemEntryBody(
                 enabled = itemUiState.isEntryValid,
                 shape = roundedCornerShape,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color.Red, contentColor = Color.White)
+                colors = ButtonDefaults.buttonColors(theme_delete_button, contentColor = Color.White)
             ) {
                 Text(text = stringResource(R.string.delete))
             }

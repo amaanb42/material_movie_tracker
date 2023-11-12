@@ -55,10 +55,13 @@ import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
 import com.example.inventory.ui.AppViewModelProvider
-import com.example.inventory.ui.item.formattedPrice
+import com.example.inventory.ui.item.formattedRating
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import androidx.compose.foundation.layout.fillMaxHeight
+import com.example.inventory.ui.theme.Pine
+import com.example.inventory.ui.theme.Text100
+import com.example.inventory.ui.theme.theme_cards
 
 
 object HomeDestination : NavigationDestination {
@@ -94,6 +97,8 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = RoundedCornerShape(16.dp),
+                containerColor = Pine,
+                contentColor = Text100,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
@@ -137,7 +142,7 @@ private fun HomeBody(
             InventoryList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small), vertical = dimensionResource(id = R.dimen.padding_large))
             )
         }
     }
@@ -164,7 +169,8 @@ private fun InventoryItem(
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(theme_cards)
     ) {
         Column(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
@@ -176,12 +182,12 @@ private fun InventoryItem(
             ) {
                 Text(
                     text = item.name,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = item.formattedPrice() + "/10",
-                    style = MaterialTheme.typography.titleMedium
+                    text = item.formattedRating() + "/10",
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }

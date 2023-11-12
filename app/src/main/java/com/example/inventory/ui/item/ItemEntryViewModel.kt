@@ -92,7 +92,7 @@ fun ItemDetails.toItem(): Item = Item(
 //    return price.toString()
 //}
 
-fun Item.formattedPrice(): String {
+fun Item.formattedRating(): String {
     // Assuming 'price' is a Double
     return if (price == 0.0) {
         "-"

@@ -32,6 +32,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.R.string
 import com.example.inventory.ui.navigation.InventoryNavHost
+import com.example.inventory.ui.theme.theme_background_notification
 
 /**
  * Top level composable that represents screens for the application.
