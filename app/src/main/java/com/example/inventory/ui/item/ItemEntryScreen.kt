@@ -159,7 +159,7 @@ fun ItemEntryBody(
             onClick = onSaveClick,
             enabled = itemUiState.isEntryValid,
             shape = roundedCornerShape,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
             colors = ButtonDefaults.buttonColors(theme_save_button, contentColor = Color.White)
         ) {
             Text(text = stringResource(R.string.save_action))
@@ -169,7 +169,7 @@ fun ItemEntryBody(
                 onClick = { deleteConfirmationRequired = true },
                 enabled = itemUiState.isEntryValid,
                 shape = roundedCornerShape,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
                 colors = ButtonDefaults.buttonColors(theme_delete_button, contentColor = Color.White)
             ) {
                 Text(text = stringResource(R.string.delete))
