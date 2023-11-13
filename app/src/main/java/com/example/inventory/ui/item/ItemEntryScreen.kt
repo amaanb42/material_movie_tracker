@@ -262,9 +262,11 @@ private fun ItemEntryScreenPreview() {
 }
 
 // Function to check if rating is valid
-public fun isRatingValid(price: String): Boolean {
-    val numericPrice = price.toDoubleOrNull()
-    return numericPrice != null && numericPrice in 1.0..10.0
+fun isRatingValid(price: String): Boolean {
+    if (price == "")
+        return true
+    val numericPrice = price.toDouble()
+    return numericPrice in 1.0..10.0
 }
 
 // Function to show toast if rating invalid

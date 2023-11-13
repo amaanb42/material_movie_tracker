@@ -216,7 +216,7 @@ private fun InventoryItem(
 fun HomeBodyPreview() {
     InventoryTheme {
         HomeBody(listOf(
-            Item(1, "Movie1", 10.0), Item(2, "Movie2", 2.0), Item(3, "Movie3", 3.0)
+            Item(1, "Movie1", "10.0"), Item(2, "Movie2", "10.0"), Item(3, "Movie3", "10.0")
         ), onItemClick = {})
     }
 }
@@ -234,7 +234,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     InventoryTheme {
         InventoryItem(
-            item = Item(1, "Game", 10.0),
+            item = Item(1, "Game", "10.0"),
             onItemClick = {}, // Since it's a preview, the lambda does nothing
             modifier = Modifier // Default modifier
         )
