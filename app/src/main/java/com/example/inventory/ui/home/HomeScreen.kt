@@ -101,8 +101,8 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = RoundedCornerShape(16.dp),
-                containerColor = Pine,
-                contentColor = Text100,
+                //containerColor = Pine,
+                //contentColor = Text100,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
@@ -179,7 +179,7 @@ private fun InventoryItem(
 
     Card(
         shape = shape,
-        colors = CardDefaults.cardColors(theme_cards),
+        //colors = CardDefaults.cardColors(theme_cards),
         modifier = modifier
             .clip(shape) // Clip to the shape
             .clickable(
