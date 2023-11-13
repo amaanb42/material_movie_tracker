@@ -63,9 +63,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
-import com.example.inventory.ui.theme.Pine
-import com.example.inventory.ui.theme.Text100
-import com.example.inventory.ui.theme.theme_cards
 
 
 object HomeDestination : NavigationDestination {

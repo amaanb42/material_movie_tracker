@@ -17,22 +17,32 @@ package com.example.inventory.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-//rose pine colors for dark theme
-val theme_save_button = Color(0xFF31748f)
-val theme_background_notification = Color(0xFF191724)
-val theme_text_color = Color(0xFFe0def4)
-val Pine = Color(0xff3e8fb0)
-val Text100 = Color(0xFFE0DEF4)
-val theme_top_app = Color(0xFF232136)
+//shared colors
 val theme_delete_button = Color(0xffB00020)
-val theme_cards = Color(0xFF232136)
 
-//rose pine colors for light theme
-val theme_light_save_button = Color(0xFF31748f)
-val theme_light_background_notification = Color(0xFFfaf4ed)
-val theme_light_text_color = Color(0xFF575279)
-val Pine_light = Color(0xff286983)
-val Text100_light = Color(0xFF575279)
-val theme_light_top_app = Color(0xfff2e9e1)
-val theme_light_delete_button = Color(0xffB00020)
-val theme_light_cards = Color(0xff56949f)
+
+//rose pine colors for dark theme
+val dark_pine = Color(0xff31748f)
+val dark_text = Color(0xffe0def4)
+val dark_foam = Color (0xff9ccfd8)
+val dark_gold = Color(0xfff6c177)
+val dark_rose = Color(0xffebbcba)
+val dark_iris = Color(0xffc4a7e7)
+val dark_highlight_med = Color(0xff403d52)
+val dark_love = Color(0xffeb6f92)
+val dark_surface = Color(0xff1f1d2e)
+val dark_highlight_low = Color(0xff21202e)
+val dark_base = Color(0xff191724)
+
+//rose dawn colors for light theme
+val light_pine = Color(0xffc4a7e7)
+val light_text = Color(0xff575279)
+val light_foam = Color (0xff9ccfd8)
+val light_gold = Color(0xffea9d34)
+val light_rose = Color(0xffd7827e)
+val light_iris = Color(0xff907aa9)
+val light_highlight_med = Color(0xffdfdad9)
+val light_love = Color(0xffeb6f92)
+val light_surface = Color(0xfffffaf3)
+val light_highlight_low = Color(0xfff4ede8)
+val light_base = Color(0xfffaf4ed)

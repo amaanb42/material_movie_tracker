@@ -55,10 +55,10 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import com.example.inventory.ui.theme.theme_delete_button
-import com.example.inventory.ui.theme.theme_save_button
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.remember
 import android.widget.Toast
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 
@@ -160,7 +160,6 @@ fun ItemEntryBody(
             enabled = itemUiState.isEntryValid,
             shape = roundedCornerShape,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
-            colors = ButtonDefaults.buttonColors(theme_save_button, contentColor = Color.White)
         ) {
             Text(text = stringResource(R.string.save_action))
         }
@@ -170,7 +169,7 @@ fun ItemEntryBody(
                 enabled = itemUiState.isEntryValid,
                 shape = roundedCornerShape,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
-                colors = ButtonDefaults.buttonColors(theme_delete_button, contentColor = Color.White)
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)
             ) {
                 Text(text = stringResource(R.string.delete))
             }
