@@ -30,10 +30,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ItemDao {
 
-    @Query("SELECT * from items ORDER BY name COLLATE NOCASE ASC")
+    @Query("SELECT * from items ORDER BY title COLLATE NOCASE ASC")
     fun getAllItems(): Flow<List<Item>>
 
-    @Query("SELECT * FROM items ORDER BY CAST(price AS unsigned) DESC")  // Order movies by rating in descending
+    @Query("SELECT * FROM items ORDER BY CAST(rating AS unsigned) DESC")  // Order movies by rating in descending
     fun sortMovieByRating(): Flow<List<Item>>
 
 

@@ -58,7 +58,7 @@ class ItemEntryViewModel(private val itemsRepository: ItemsRepository) : ViewMod
 
     private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank()
+            title.isNotBlank()
         }
     }
 }
@@ -73,24 +73,21 @@ data class ItemUiState(
 
 data class ItemDetails(
     val id: Int = 0,
-    val name: String = "",
-    val price: String = "",
+    val title: String = "",
+    val rating: String = "",
+    val isComplete: Boolean = false
 )
 
-/**
- * Extension function to convert [ItemUiState] to [Item]. If the value of [ItemDetails.price] is
- * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [ItemUiState] is not a valid [Int], then the quantity will be set to 0
- */
 fun ItemDetails.toItem(): Item = Item(
     id = id,
-    name = name,
-    price = price
+    title = title,
+    rating = rating,
+    isComplete = isComplete
 )
 
 fun Item.formattedRating(): String {
-    // Check if the price is 0.0, return "-"
-    return price
+    // Check if the rating is 0.0, return "-"
+    return rating
 }
 
 
@@ -109,6 +106,7 @@ fun Item.toItemUiState(isEntryValid: Boolean = false): ItemUiState = ItemUiState
  */
 fun Item.toItemDetails(): ItemDetails = ItemDetails(
     id = id,
-    name = name,
-    price = price
+    title = title,
+    rating = rating,
+    isComplete = isComplete
 )

@@ -193,7 +193,7 @@ private fun InventoryItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = item.name,
+                    text = item.title,
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(Modifier.weight(1f))

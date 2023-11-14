@@ -96,7 +96,7 @@ fun ItemEntryScreen(
                 // and the item may not be saved in the Database. This is because when config
                 // change occurs, the Activity will be recreated and the rememberCoroutineScope will
                 // be cancelled - since the scope is bound to composition.
-                if (!isRatingValid(viewModel.itemUiState.itemDetails.price)) {
+                if (!isRatingValid(viewModel.itemUiState.itemDetails.rating)) {
                     showToast = true
                 } else {
                     coroutineScope.launch {
@@ -200,8 +200,8 @@ fun ItemInputForm(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         OutlinedTextField(
-            value = itemDetails.name,
-            onValueChange = { onValueChange(itemDetails.copy(name = it)) },
+            value = itemDetails.title,
+            onValueChange = { onValueChange(itemDetails.copy(title = it)) },
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
             label = { Text(stringResource(R.string.item)) },
 //            colors = OutlinedTextFieldDefaults.colors(
@@ -215,8 +215,8 @@ fun ItemInputForm(
             singleLine = true
         )
         OutlinedTextField(
-            value = itemDetails.price,
-            onValueChange = { onValueChange(itemDetails.copy(price = it)) },
+            value = itemDetails.rating,
+            onValueChange = { onValueChange(itemDetails.copy(rating = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.item_price_req)) },
             modifier = Modifier.fillMaxWidth(),
@@ -254,18 +254,18 @@ private fun ItemEntryScreenPreview() {
     InventoryTheme {
         ItemEntryBody(itemUiState = ItemUiState(
             ItemDetails(
-                name = "Item name", price = "10.00"
+                title = "Item title", rating = "10.00"
             )
         ), onItemValueChange = {},onSaveClick = {}, onDelete = {}, showDeleteButton = false)
     }
 }
 
 // Function to check if rating is valid
-fun isRatingValid(price: String): Boolean {
-    if (price == "")
+fun isRatingValid(rating: String): Boolean {
+    if (rating == "")
         return true
-    val numericPrice = price.toDouble()
-    return numericPrice in 1.0..10.0
+    val numericRating = rating.toDouble()
+    return numericRating in 1.0..10.0
 }
 
 // Function to show toast if rating invalid
