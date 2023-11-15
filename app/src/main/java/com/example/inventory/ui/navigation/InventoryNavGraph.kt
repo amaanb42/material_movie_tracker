@@ -61,7 +61,6 @@ fun InventoryNavHost(
         }
         composable(route = CompletedDestination.route) {
             CompletedScreen(
-                navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
                 navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") }
             )
         }

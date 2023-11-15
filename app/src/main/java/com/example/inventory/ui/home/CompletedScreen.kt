@@ -19,6 +19,7 @@ package com.example.inventory.ui.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -50,6 +51,7 @@ import com.example.inventory.data.Item
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyListState
 
 
 object CompletedDestination : NavigationDestination {
@@ -64,7 +66,6 @@ object CompletedDestination : NavigationDestination {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun CompletedScreen(
-    navigateToItemEntry: () -> Unit,
     navigateToEditItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CompletedViewModel = viewModel(factory = AppViewModelProvider.Factory)
@@ -81,22 +82,6 @@ fun CompletedScreen(
                 scrollBehavior = scrollBehavior
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateToItemEntry,
-                shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_large))
-                    .padding(bottom = 60.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.item_entry_title)
-                )
-            }
-        }
     ) { innerPadding ->
         CompletedBody(
             itemList = completedUiState.itemList,
@@ -134,8 +119,8 @@ private fun CompletedBody(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
                 modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small), vertical = dimensionResource(id = R.dimen.padding_large))
-                    .padding(bottom = 60.dp)
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                    .padding(bottom = 80.dp)
             )
         }
     }
@@ -146,7 +131,13 @@ private fun CompletedBody(
 private fun CompletedInventoryList(
     itemList: List<Item>, onItemClick: (Item) -> Unit, modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            top = dimensionResource(id = R.dimen.padding_small), // Add top padding
+            bottom = dimensionResource(id = R.dimen.padding_small) // Add bottom padding
+        )
+    ) {
         items(items = itemList, key = { it.id }) { item ->
             if (item.isWatched) {
                 InventoryItem(

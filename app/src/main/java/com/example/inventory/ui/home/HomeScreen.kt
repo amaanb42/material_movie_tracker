@@ -145,10 +145,7 @@ fun HomeBody(
                 onItemClick = { onItemClick(it.id) },
                 listState = listState,
                 modifier = Modifier
-                    .padding(
-                        horizontal = dimensionResource(id = R.dimen.padding_small),
-                        //vertical = dimensionResource(id = R.dimen.padding_small)
-                    )
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
                     .padding(bottom = 80.dp)
             )
         }
