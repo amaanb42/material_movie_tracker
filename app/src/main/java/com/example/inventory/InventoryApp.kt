@@ -32,6 +32,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
@@ -43,8 +44,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.ui.navigation.InventoryNavHost
@@ -82,7 +86,7 @@ fun InventoryTopSearchBar(
                     modifier = Modifier
                         .height(48.dp) // Adjust height as needed
                         .clip(RoundedCornerShape(8.dp)), // Rounded corners
-                    placeholder = { Text("Search Your List") },
+                    placeholderText = "Search Your List",
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { onSearchQueryChanged("") }) {
@@ -115,7 +119,7 @@ fun SearchBar(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: @Composable () -> Unit,
+    placeholderText: String,
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true
 ) {
@@ -123,20 +127,20 @@ fun SearchBar(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        placeholder = placeholder,
+        textStyle = TextStyle(fontSize = 16.sp), // Adjust the font size as needed
+        placeholder = { Text(text = placeholderText, style = TextStyle(fontSize = 14.sp)) }, // Ensure the placeholder has the same style
         trailingIcon = trailingIcon,
         singleLine = singleLine,
         shape = RoundedCornerShape(8.dp),
-//        colors = TextFieldDefaults.textFieldColors(
-//            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
-//            cursorColor = MaterialTheme.colorScheme.onSurface,
-//            trailingIconColor = MaterialTheme.colorScheme.onSurface,
-//            focusedIndicatorColor = Color.Transparent,
-//            unfocusedIndicatorColor = Color.Transparent,
-//            disabledIndicatorColor = Color.Transparent
-//        )
+        colors = TextFieldDefaults.colors(
+            cursorColor = MaterialTheme.colorScheme.onSurface,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        )
     )
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
