@@ -159,12 +159,14 @@ private fun InventoryList(
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemList, key = { it.id }) { item ->
-            InventoryItem(
-                item = item,
-                onItemClick = { onItemClick(item) },
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_small))
-            )
+            if (!item.isWatched) {
+                InventoryItem(
+                    item = item,
+                    onItemClick = { onItemClick(item) },
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.padding_small))
+                )
+            }
         }
     }
 }
