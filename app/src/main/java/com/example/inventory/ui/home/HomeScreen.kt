@@ -100,7 +100,9 @@ fun HomeScreen(
                 shape = RoundedCornerShape(16.dp),
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_large))
+                    .padding(bottom = 60.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -133,7 +135,8 @@ private fun HomeBody(
                 contentAlignment = Alignment.Center // This centers the content vertically
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally // This aligns the text to the center horizontally
                 ) {
                     Text(text = stringResource(R.string.no_item_description), style = MaterialTheme.typography.titleLarge)
@@ -143,7 +146,9 @@ private fun HomeBody(
             InventoryList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small), vertical = dimensionResource(id = R.dimen.padding_large))
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small), vertical = dimensionResource(id = R.dimen.padding_large))
+                    .padding(bottom = 60.dp)
             )
         }
     }
@@ -158,7 +163,8 @@ private fun InventoryList(
             InventoryItem(
                 item = item,
                 onItemClick = { onItemClick(item) },
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
             )
         }
     }
@@ -237,4 +243,3 @@ fun InventoryItemPreview() {
         )
     }
 }
-

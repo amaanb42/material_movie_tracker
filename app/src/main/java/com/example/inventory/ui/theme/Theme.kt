@@ -38,7 +38,8 @@ private val DarkColorScheme = darkColorScheme(
     onPrimaryContainer = dark_text,
     secondary = dark_gold,
     onSecondary = dark_text,
-    secondaryContainer = dark_rose,
+    // secondaryContainer = dark_rose,
+    secondaryContainer = dark_pine,
     onSecondaryContainer = dark_text,
     tertiary = dark_iris,
     onTertiary = dark_text,
@@ -64,8 +65,9 @@ private val LightColorScheme = lightColorScheme(
     onPrimaryContainer = light_text,
     secondary = light_gold,
     onSecondary = light_text,
-    secondaryContainer = light_rose,
+//    secondaryContainer = light_rose,
     onSecondaryContainer = light_text,
+    secondaryContainer = light_pine,
     tertiary = light_iris,
     onTertiary = light_text,
     tertiaryContainer = light_highlight_med,
@@ -106,10 +108,10 @@ fun InventoryTheme(
             val window = (view.context as Activity).window
             if (darkTheme) {
                 window.statusBarColor = colorScheme.surface.toArgb()
-                window.navigationBarColor = colorScheme.background.toArgb()
+                window.navigationBarColor = colorScheme.surface.toArgb()
             } else {
                 window.statusBarColor = colorScheme.surface.toArgb()
-                window.navigationBarColor = colorScheme.background.toArgb()
+                window.navigationBarColor = colorScheme.surface.toArgb()
             }
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
