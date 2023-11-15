@@ -75,14 +75,14 @@ data class ItemDetails(
     val id: Int = 0,
     val title: String = "",
     val rating: String = "",
-    val isComplete: Boolean = false
+    val isWatched: Boolean = false
 )
 
 fun ItemDetails.toItem(): Item = Item(
     id = id,
     title = title,
     rating = rating,
-    isComplete = isComplete
+    isWatched = isWatched
 )
 
 fun Item.formattedRating(): String {
@@ -108,5 +108,5 @@ fun Item.toItemDetails(): ItemDetails = ItemDetails(
     id = id,
     title = title,
     rating = rating,
-    isComplete = isComplete
+    isWatched = isWatched
 )
