@@ -20,6 +20,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -47,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.ui.home.CompletedDestination
 import com.example.inventory.ui.home.HomeDestination
@@ -62,7 +67,6 @@ data class BottomNavigationItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
-    //@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -89,57 +93,76 @@ class MainActivity : ComponentActivity() {
                         hasNews = false
                     )
                 )
+
                 val navController = rememberNavController()
                 var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
-                // A surface container using the 'background' color from the theme
+
+                // Determine the current route
+                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
                         bottomBar = {
-                            NavigationBar(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                                tonalElevation = 0.dp
+                            // Show the NavigationBar only on specified screens
+                            // Use AnimatedVisibility for the NavigationBar
+                            AnimatedVisibility(
+                                visible = currentRoute in listOf(HomeDestination.route, CompletedDestination.route, "settings_route"),
+                                enter = slideInVertically(
+                                    // Start the slide from below the screen
+                                    initialOffsetY = { fullHeight -> fullHeight },
+                                    animationSpec = tween(durationMillis = 300)
+                                ),
+                                exit = slideOutVertically(
+                                    // Exit towards the bottom of the screen
+                                    targetOffsetY = { fullHeight -> fullHeight },
+                                    animationSpec = tween(durationMillis = 300)
+                                )
                             ) {
-                                items.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = selectedItemIndex == index,
-                                        onClick = {
-                                            selectedItemIndex = index
-                                            try {
-                                                val currentRoute = navController.currentBackStackEntry?.destination?.route
-                                                when (index) {
-                                                    0 -> if (currentRoute != HomeDestination.route) navController.navigate(HomeDestination.route)
-                                                    1 -> if (currentRoute != CompletedDestination.route) navController.navigate(CompletedDestination.route)
-                                                    2 -> {
-                                                        // For "Settings", no action defined yet
+                                NavigationBar(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurface,
+                                    tonalElevation = 0.dp
+                                ) {
+                                    items.forEachIndexed { index, item ->
+                                        NavigationBarItem(
+                                            selected = selectedItemIndex == index,
+                                            onClick = {
+                                                selectedItemIndex = index
+                                                try {
+                                                    val route = when (index) {
+                                                        0 -> HomeDestination.route
+                                                        1 -> CompletedDestination.route
+                                                        2 -> "settings_route" // Replace with actual Settings route
+                                                        else -> null
                                                     }
+                                                    route?.let { navController.navigate(it) }
+                                                } catch (e: Exception) {
+                                                    Log.e("NavigationError", "Error navigating to index $index", e)
                                                 }
-                                            } catch (e: Exception) {
-                                                Log.e("NavigationError", "Error navigating to index $index", e)
-                                            }
-                                        },
-                                        label = { Text(text = item.title) },
-                                        alwaysShowLabel = false,
-                                        icon = {
-                                            BadgedBox(
-                                                badge = {
-                                                    if (item.badgeCount != null) {
-                                                        Badge { Text(text = item.badgeCount.toString()) }
-                                                    } else if (item.hasNews) {
-                                                        Badge()
+                                            },
+                                            label = { Text(text = item.title) },
+                                            alwaysShowLabel = false,
+                                            icon = {
+                                                BadgedBox(
+                                                    badge = {
+                                                        if (item.badgeCount != null) {
+                                                            Badge { Text(text = item.badgeCount.toString()) }
+                                                        } else if (item.hasNews) {
+                                                            Badge()
+                                                        }
                                                     }
+                                                ) {
+                                                    Icon(
+                                                        imageVector = if (selectedItemIndex == index) item.selectedIcon else item.unselectedIcon,
+                                                        contentDescription = item.title
+                                                    )
                                                 }
-                                            ) {
-                                                Icon(
-                                                    imageVector = if (selectedItemIndex == index) item.selectedIcon else item.unselectedIcon,
-                                                    contentDescription = item.title
-                                                )
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             }
                         }

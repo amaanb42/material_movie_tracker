@@ -23,10 +23,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -47,6 +50,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -75,7 +79,6 @@ fun InventoryTopSearchBar(
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     TopAppBar(
-        // ... existing TopAppBar setup ...
         title = {
             // Centering the search bar
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -123,12 +126,22 @@ fun SearchBar(
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = true
 ) {
+    val commonTextStyle = TextStyle(
+        // Add other styling properties as needed, e.g., fontFamily, fontWeight, etc.
+        fontSize = 14.sp,
+    )
     TextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        textStyle = TextStyle(fontSize = 16.sp), // Adjust the font size as needed
-        placeholder = { Text(text = placeholderText, style = TextStyle(fontSize = 14.sp)) }, // Ensure the placeholder has the same style
+        textStyle = commonTextStyle, // Adjust the font size as needed
+        placeholder = { Text(text = placeholderText, style = commonTextStyle) }, // Ensure the placeholder has the same style
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "Search Icon"
+            )
+        },
         trailingIcon = trailingIcon,
         singleLine = singleLine,
         shape = RoundedCornerShape(8.dp),
