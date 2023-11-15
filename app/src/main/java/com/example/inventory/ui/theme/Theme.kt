@@ -53,7 +53,7 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = dark_text,
     surface = dark_surface,
     onSurface = dark_text,
-    surfaceVariant = dark_highlight_low,
+    surfaceVariant = dark_overlay,
     onSurfaceVariant = dark_text,
     outline = dark_pine
 )
@@ -80,7 +80,7 @@ private val LightColorScheme = lightColorScheme(
     onBackground = light_text,
     surface = light_surface,
     onSurface = light_text,
-    surfaceVariant = light_highlight_low,
+    surfaceVariant = light_overlay,
     onSurfaceVariant = light_text,
     outline = light_pine
     )
