@@ -1,3 +1,5 @@
+package com.example.inventory.ui.home
+
 /*
  * Copyright (C) 2023 The Android Open Source Project
  *
@@ -13,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.example.inventory.ui.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -64,8 +64,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 
 
-object HomeDestination : NavigationDestination {
-    override val route = "home"
+object CompletedDestination : NavigationDestination {
+    override val route = "completed"
     override val titleRes = R.string.app_name
 }
 
@@ -75,20 +75,20 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(
+fun CompletedScreen(
     navigateToItemEntry: () -> Unit,
     navigateToEditItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: CompletedViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val homeUiState by viewModel.homeUiState.collectAsState()
+    val completedUiState by viewModel.completedUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             InventoryTopAppBar(
-                title = stringResource(HomeDestination.titleRes),
+                title = stringResource(CompletedDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
             )
@@ -110,8 +110,8 @@ fun HomeScreen(
             }
         }
     ) { innerPadding ->
-        HomeBody(
-            itemList = homeUiState.itemList,
+        CompletedBody(
+            itemList = completedUiState.itemList,
             onItemClick = navigateToEditItem,
             modifier = modifier
                 .padding(innerPadding)
@@ -121,7 +121,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeBody(
+private fun CompletedBody(
     itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
 ) {
     Column(
@@ -142,7 +142,7 @@ fun HomeBody(
                 }
             }
         } else {
-            InventoryList(
+            CompletedInventoryList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
                 modifier = Modifier
@@ -153,13 +153,14 @@ fun HomeBody(
     }
 }
 
+
 @Composable
-private fun InventoryList(
+private fun CompletedInventoryList(
     itemList: List<Item>, onItemClick: (Item) -> Unit, modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(items = itemList, key = { it.id }) { item ->
-            if (!item.isWatched) {
+            if (item.isWatched) {
                 InventoryItem(
                     item = item,
                     onItemClick = { onItemClick(item) },
@@ -171,76 +172,7 @@ private fun InventoryList(
     }
 }
 
-@Composable
-fun InventoryItem(
-    item: Item,
-    onItemClick: (Item) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val shape = RoundedCornerShape(8.dp)
-    val interactionSource = remember { MutableInteractionSource() }
-    val ripple = rememberRipple(bounded = true)
-
-    Card(
-        shape = shape,
-        //colors = CardDefaults.cardColors(theme_cards),
-        modifier = modifier
-            .clip(shape) // Clip to the shape
-            .clickable(
-                interactionSource = interactionSource,
-                indication = ripple,
-                onClick = { onItemClick(item) }
-            )
-    ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = item.title,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = item.formattedRating(),
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
-        }
-    }
-}
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun HomeBodyPreview() {
-    InventoryTheme {
-        HomeBody(listOf(
-            Item(1, "Movie1", "10.0"), Item(2, "Movie2", "10.0"), Item(3, "Movie3", "10.0")
-        ), onItemClick = {})
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun HomeBodyEmptyListPreview() {
-    InventoryTheme {
-        HomeBody(listOf(), onItemClick = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun InventoryItemPreview() {
-    InventoryTheme {
-        InventoryItem(
-            item = Item(1, "Game", "10.0"),
-            onItemClick = {}, // Since it's a preview, the lambda does nothing
-            modifier = Modifier // Default modifier
-        )
-    }
-}

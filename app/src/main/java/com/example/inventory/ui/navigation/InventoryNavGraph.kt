@@ -23,6 +23,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.inventory.ui.home.CompletedDestination
+import com.example.inventory.ui.home.CompletedScreen
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
 import com.example.inventory.ui.item.ItemEditDestination
@@ -45,6 +47,15 @@ fun InventoryNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
+                navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
+//                navigateToItemUpdate = {
+//                    navController.navigate("${ItemDetailsDestination.route}/${it}")
+//                }
+                navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") }
+            )
+        }
+        composable(route = CompletedDestination.route) {
+            CompletedScreen(
                 navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
 //                navigateToItemUpdate = {
 //                    navController.navigate("${ItemDetailsDestination.route}/${it}")
