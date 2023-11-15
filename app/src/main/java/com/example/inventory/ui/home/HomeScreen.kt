@@ -253,10 +253,24 @@ fun InventoryItem(
 
 @Composable
 fun LazyListState.isScrollingUp(): State<Boolean> {
-    return derivedStateOf {
-        firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
+    return produceState(initialValue = true) { // Initial value set to true so the FAB shows by default
+        var lastScrollOffset = this@isScrollingUp.firstVisibleItemScrollOffset
+        var lastVisibleItemIndex = this@isScrollingUp.firstVisibleItemIndex
+
+        snapshotFlow { firstVisibleItemIndex to firstVisibleItemScrollOffset }
+            .collect { (currentIndex, currentScroll) ->
+                val isScrollingUpNow = currentIndex < lastVisibleItemIndex ||
+                        (currentIndex == lastVisibleItemIndex && currentScroll < lastScrollOffset)
+
+                if (currentIndex != lastVisibleItemIndex || currentScroll != lastScrollOffset) {
+                    value = isScrollingUpNow
+                    lastScrollOffset = currentScroll
+                    lastVisibleItemIndex = currentIndex
+                }
+            }
     }
 }
+
 
 
 @Composable
