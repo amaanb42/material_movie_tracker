@@ -54,7 +54,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.InventoryTopSearchBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
 import com.example.inventory.ui.AppViewModelProvider
@@ -65,8 +65,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.draw.clip
 
@@ -90,13 +92,16 @@ fun HomeScreen(
     val homeUiState by viewModel.homeUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val listState = rememberLazyListState()
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            InventoryTopAppBar(
-                title = stringResource(HomeDestination.titleRes),
+            InventoryTopSearchBar(
+                //title = stringResource(CompletedDestination.titleRes),
                 canNavigateBack = false,
+                searchQuery = searchQuery, // Pass searchQuery to the TopAppBar
+                onSearchQueryChanged = { query -> searchQuery = query },
                 scrollBehavior = scrollBehavior
             )
         },
@@ -109,6 +114,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
+            searchQuery = searchQuery,
             onItemClick = navigateToEditItem,
             listState = listState,
             modifier = modifier
@@ -120,13 +126,21 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    itemList: List<Item>, onItemClick: (Int) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
+    itemList: List<Item>,
+    searchQuery: String,
+    onItemClick: (Int) -> Unit,
+    listState: LazyListState,
+    modifier: Modifier = Modifier
 ) {
+    // Filter items based on search query and not watched status
+    val filteredItems = itemList.filter {
+        !it.isWatched && it.title.contains(searchQuery, ignoreCase = true)
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        if (itemList.isEmpty()) {
+        if (filteredItems.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center // This centers the content vertically
@@ -141,7 +155,7 @@ fun HomeBody(
             }
         } else {
             InventoryList(
-                itemList = itemList,
+                itemList = filteredItems,
                 onItemClick = { onItemClick(it.id) },
                 listState = listState,
                 modifier = Modifier

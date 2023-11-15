@@ -20,17 +20,12 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,13 +40,15 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.InventoryTopSearchBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 
 object CompletedDestination : NavigationDestination {
@@ -72,19 +69,25 @@ fun CompletedScreen(
 ) {
     val completedUiState by viewModel.completedUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            InventoryTopAppBar(
-                title = stringResource(CompletedDestination.titleRes),
+            InventoryTopSearchBar(
+                //title = stringResource(CompletedDestination.titleRes),
                 canNavigateBack = false,
+                searchQuery = searchQuery, // Pass searchQuery to the TopAppBar
+                onSearchQueryChanged = { query -> searchQuery = query },
                 scrollBehavior = scrollBehavior
             )
         },
     ) { innerPadding ->
         CompletedBody(
-            itemList = completedUiState.itemList,
+            itemList = completedUiState.itemList.filter {
+                it.isWatched && it.title.contains(searchQuery, ignoreCase = true)
+            },
+            searchQuery = searchQuery,
             onItemClick = navigateToEditItem,
             modifier = modifier
                 .padding(innerPadding)
@@ -95,13 +98,17 @@ fun CompletedScreen(
 
 @Composable
 private fun CompletedBody(
-    itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Item>, searchQuery: String, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
 ) {
+    // Filter items based on search query and isWatched status
+    val filteredItems = itemList.filter {
+        it.isWatched && it.title.contains(searchQuery, ignoreCase = true)
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        if (itemList.isEmpty()) {
+        if (filteredItems.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxHeight(),
                 contentAlignment = Alignment.Center // This centers the content vertically
