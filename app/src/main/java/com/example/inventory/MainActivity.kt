@@ -110,10 +110,13 @@ class MainActivity : ComponentActivity() {
                                         onClick = {
                                             selectedItemIndex = index
                                             try {
+                                                val currentRoute = navController.currentBackStackEntry?.destination?.route
                                                 when (index) {
-                                                    0 -> navController.navigate(HomeDestination.route)
-                                                    1 -> navController.navigate(CompletedDestination.route)
-                                                    2 -> {} // For "Settings", no action defined yet
+                                                    0 -> if (currentRoute != HomeDestination.route) navController.navigate(HomeDestination.route)
+                                                    1 -> if (currentRoute != CompletedDestination.route) navController.navigate(CompletedDestination.route)
+                                                    2 -> {
+                                                        // For "Settings", no action defined yet
+                                                    }
                                                 }
                                             } catch (e: Exception) {
                                                 Log.e("NavigationError", "Error navigating to index $index", e)
