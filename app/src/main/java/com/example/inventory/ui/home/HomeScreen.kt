@@ -17,6 +17,9 @@
 package com.example.inventory.ui.home
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -59,9 +62,16 @@ import com.example.inventory.ui.item.formattedRating
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.draw.clip
+//import androidx.compose.ui.node.CanFocusChecker.exit
 
 
 object HomeDestination : NavigationDestination {
@@ -83,6 +93,7 @@ fun HomeScreen(
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -94,25 +105,16 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateToItemEntry,
-                shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_large))
-                    .padding(bottom = 60.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.item_entry_title)
-                )
-            }
+            AnimatedFloatingActionButton(
+                listState = listState,
+                navigateToItemEntry = navigateToItemEntry
+            )
         }
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
             onItemClick = navigateToEditItem,
+            listState = listState,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -122,7 +124,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    itemList: List<Item>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Item>, onItemClick: (Int) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,8 +147,12 @@ fun HomeBody(
             InventoryList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
+                listState = listState,
                 modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small), vertical = dimensionResource(id = R.dimen.padding_large))
+                    .padding(
+                        horizontal = dimensionResource(id = R.dimen.padding_small),
+                        vertical = dimensionResource(id = R.dimen.padding_large)
+                    )
                     .padding(bottom = 60.dp)
             )
         }
@@ -155,9 +161,9 @@ fun HomeBody(
 
 @Composable
 private fun InventoryList(
-    itemList: List<Item>, onItemClick: (Item) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Item>, onItemClick: (Item) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(state = listState, modifier = modifier) {
         items(items = itemList, key = { it.id }) { item ->
             if (!item.isWatched) {
                 InventoryItem(
@@ -215,32 +221,70 @@ fun InventoryItem(
 
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
+//@Composable
+//fun HomeBodyPreview() {
+//    InventoryTheme {
+//        HomeBody(listOf(
+//            Item(1, "Movie1", "10.0"), Item(2, "Movie2", "10.0"), Item(3, "Movie3", "10.0")
+//        ), onItemClick = {})
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun HomeBodyEmptyListPreview() {
+//    InventoryTheme {
+//        HomeBody(listOf(), onItemClick = {})
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun InventoryItemPreview() {
+//    InventoryTheme {
+//        InventoryItem(
+//            item = Item(1, "Game", "10.0"),
+//            onItemClick = {}, // Since it's a preview, the lambda does nothing
+//            modifier = Modifier // Default modifier
+//        )
+//    }
+//}
+
 @Composable
-fun HomeBodyPreview() {
-    InventoryTheme {
-        HomeBody(listOf(
-            Item(1, "Movie1", "10.0"), Item(2, "Movie2", "10.0"), Item(3, "Movie3", "10.0")
-        ), onItemClick = {})
+fun LazyListState.isScrollingUp(): State<Boolean> {
+    return derivedStateOf {
+        firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
-fun HomeBodyEmptyListPreview() {
-    InventoryTheme {
-        HomeBody(listOf(), onItemClick = {})
+fun AnimatedFloatingActionButton(
+    listState: LazyListState,
+    navigateToItemEntry: () -> Unit
+) {
+    val isScrollingUp = listState.isScrollingUp().value
+
+    AnimatedVisibility(
+        visible = isScrollingUp,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        FloatingActionButton(
+            onClick = navigateToItemEntry,
+            shape = RoundedCornerShape(16.dp),
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier
+                .padding(dimensionResource(id = R.dimen.padding_large))
+                .padding(bottom = 60.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(R.string.item_entry_title)
+            )
+        }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun InventoryItemPreview() {
-    InventoryTheme {
-        InventoryItem(
-            item = Item(1, "Game", "10.0"),
-            onItemClick = {}, // Since it's a preview, the lambda does nothing
-            modifier = Modifier // Default modifier
-        )
-    }
-}
