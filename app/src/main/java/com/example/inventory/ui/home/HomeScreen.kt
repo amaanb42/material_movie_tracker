@@ -25,6 +25,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -146,9 +147,9 @@ fun HomeBody(
                 modifier = Modifier
                     .padding(
                         horizontal = dimensionResource(id = R.dimen.padding_small),
-                        vertical = dimensionResource(id = R.dimen.padding_large)
+                        //vertical = dimensionResource(id = R.dimen.padding_small)
                     )
-                    .padding(bottom = 60.dp)
+                    .padding(bottom = 80.dp)
             )
         }
     }
@@ -158,7 +159,14 @@ fun HomeBody(
 private fun InventoryList(
     itemList: List<Item>, onItemClick: (Item) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
 ) {
-    LazyColumn(state = listState, modifier = modifier) {
+    LazyColumn(
+        state = listState,
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            top = dimensionResource(id = R.dimen.padding_small), // Add top padding
+            bottom = dimensionResource(id = R.dimen.padding_small) // Add bottom padding
+        )
+    ) {
         items(items = itemList, key = { it.id }) { item ->
             if (!item.isWatched) {
                 InventoryItem(
@@ -171,6 +179,7 @@ private fun InventoryList(
         }
     }
 }
+
 
 @Composable
 fun InventoryItem(
