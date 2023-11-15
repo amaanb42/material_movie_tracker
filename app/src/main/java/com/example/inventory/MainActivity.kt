@@ -17,6 +17,7 @@ package com.example.inventory
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +48,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.rememberNavController
+import com.example.inventory.ui.home.CompletedDestination
+import com.example.inventory.ui.home.HomeDestination
 
 
 data class BottomNavigationItem(
@@ -86,6 +90,7 @@ class MainActivity : ComponentActivity() {
                         hasNews = false
                     )
                 )
+                val navController = rememberNavController()
                 var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -104,7 +109,15 @@ class MainActivity : ComponentActivity() {
                                         selected = selectedItemIndex == index,
                                         onClick = {
                                             selectedItemIndex = index
-                                            // navController.navigate(item.title)
+                                            try {
+                                                when (index) {
+                                                    0 -> navController.navigate(HomeDestination.route)
+                                                    1 -> navController.navigate(CompletedDestination.route)
+                                                    2 -> {} // For "Settings", no action defined yet
+                                                }
+                                            } catch (e: Exception) {
+                                                Log.e("NavigationError", "Error navigating to index $index", e)
+                                            }
                                         },
                                         label = { Text(text = item.title) },
                                         alwaysShowLabel = false,
@@ -131,7 +144,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         // Content of the Scaffold goes here.
                         // For example, this could be where you put your navigation logic.
-                        InventoryApp()
+                        InventoryApp(navController = navController)
                     }
                 }
             }
