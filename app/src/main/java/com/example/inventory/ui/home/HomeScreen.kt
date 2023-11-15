@@ -214,38 +214,6 @@ fun InventoryItem(
     }
 }
 
-
-
-//@Preview(showBackground = true)
-//@Composable
-//fun HomeBodyPreview() {
-//    InventoryTheme {
-//        HomeBody(listOf(
-//            Item(1, "Movie1", "10.0"), Item(2, "Movie2", "10.0"), Item(3, "Movie3", "10.0")
-//        ), onItemClick = {})
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun HomeBodyEmptyListPreview() {
-//    InventoryTheme {
-//        HomeBody(listOf(), onItemClick = {})
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun InventoryItemPreview() {
-//    InventoryTheme {
-//        InventoryItem(
-//            item = Item(1, "Game", "10.0"),
-//            onItemClick = {}, // Since it's a preview, the lambda does nothing
-//            modifier = Modifier // Default modifier
-//        )
-//    }
-//}
-
 @Composable
 fun LazyListState.isScrollingUp(): State<Boolean> {
     return produceState(initialValue = true) { // Initial value set to true so the FAB shows by default
@@ -265,8 +233,6 @@ fun LazyListState.isScrollingUp(): State<Boolean> {
             }
     }
 }
-
-
 
 @Composable
 fun AnimatedFloatingActionButton(

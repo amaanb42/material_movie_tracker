@@ -31,6 +31,10 @@ import com.example.inventory.ui.item.ItemEditDestination
 import com.example.inventory.ui.item.ItemEditScreen
 import com.example.inventory.ui.item.ItemEntryDestination
 import com.example.inventory.ui.item.ItemEntryScreen
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.navigation.compose.*
+
 
 /**
  * Provides Navigation graph for the application.
@@ -45,21 +49,19 @@ fun InventoryNavHost(
         startDestination = HomeDestination.route,
         modifier = modifier
     ) {
-        composable(route = HomeDestination.route) {
+        composable(
+            route = HomeDestination.route,
+
+
+        ) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
-//                navigateToItemUpdate = {
-//                    navController.navigate("${ItemDetailsDestination.route}/${it}")
-//                }
                 navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") }
             )
         }
         composable(route = CompletedDestination.route) {
             CompletedScreen(
                 navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
-//                navigateToItemUpdate = {
-//                    navController.navigate("${ItemDetailsDestination.route}/${it}")
-//                }
                 navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") }
             )
         }
