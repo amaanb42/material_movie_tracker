@@ -33,7 +33,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -68,16 +71,16 @@ fun InventoryTopSearchBar(
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
     TopAppBar(
+        // ... existing TopAppBar setup ...
         title = {
             // Centering the search bar
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                // Making the search bar smaller and with rounded corners
-                OutlinedTextField(
+                // Using the custom SearchBar composable
+                SearchBar(
                     value = searchQuery,
                     onValueChange = onSearchQueryChanged,
                     modifier = Modifier
-                        .height(48.dp) // Adjust width as needed
-                        //.padding(horizontal = 0.dp) // Add horizontal padding for centering
+                        .height(48.dp) // Adjust height as needed
                         .clip(RoundedCornerShape(8.dp)), // Rounded corners
                     placeholder = { Text("Search Your List") },
                     trailingIcon = {
@@ -104,6 +107,34 @@ fun InventoryTopSearchBar(
         scrollBehavior = scrollBehavior,
         // Uncomment or adjust colors if needed
         // colors = TopAppBarDefaults.largeTopAppBarColors()
+    )
+}
+
+@Composable
+fun SearchBar(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: @Composable () -> Unit,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    singleLine: Boolean = true
+) {
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        placeholder = placeholder,
+        trailingIcon = trailingIcon,
+        singleLine = singleLine,
+        shape = RoundedCornerShape(8.dp),
+//        colors = TextFieldDefaults.textFieldColors(
+//            backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+//            cursorColor = MaterialTheme.colorScheme.onSurface,
+//            trailingIconColor = MaterialTheme.colorScheme.onSurface,
+//            focusedIndicatorColor = Color.Transparent,
+//            unfocusedIndicatorColor = Color.Transparent,
+//            disabledIndicatorColor = Color.Transparent
+//        )
     )
 }
 
