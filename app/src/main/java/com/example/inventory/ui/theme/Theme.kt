@@ -16,6 +16,7 @@
 package com.example.inventory.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import android.hardware.lights.Light
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
