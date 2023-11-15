@@ -67,6 +67,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.alpha
 
@@ -247,16 +248,22 @@ fun ItemInputForm(
             enabled = enabled,
             singleLine = true
         )
-        CustomSwitchWithText()
+        CustomSwitchWithText(
+            itemDetails = itemDetails,
+            onValueChange = onValueChange
+        )
     }
 }
 
 
 @Composable
-fun CustomSwitchWithText() {
-    var checked by remember { mutableStateOf(false) }
+fun CustomSwitchWithText(
+    itemDetails: ItemDetails,
+    onValueChange: (ItemDetails) -> Unit
+) {
+    val checkedState = rememberUpdatedState(itemDetails.isWatched)
 
-    val icon: (@Composable () -> Unit)? = if (checked) {
+    val icon: @Composable (() -> Unit)? = if (checkedState.value) {
         {
             Icon(
                 imageVector = Icons.Filled.Check,
@@ -274,16 +281,18 @@ fun CustomSwitchWithText() {
         modifier = Modifier.padding(8.dp)
     ) {
         Switch(
+            checked = checkedState.value,
+            onCheckedChange = {
+                onValueChange(itemDetails.copy(isWatched = it))
+            },
             modifier = Modifier.size(50.dp, 25.dp), // Adjust size for better visibility
-            checked = checked,
-            onCheckedChange = { checked = it },
             thumbContent = icon
         )
 
         Text("Watched", modifier = Modifier.padding(start = 8.dp))
-
     }
 }
+
 
 @Composable
 private fun DeleteConfirmationDialog(
@@ -312,7 +321,7 @@ private fun ItemEntryScreenPreview() {
     InventoryTheme {
         ItemEntryBody(itemUiState = ItemUiState(
             ItemDetails(
-                title = "Item title", rating = "10.00"
+                title = "Item title", rating = "10.00", isWatched = true
             )
         ), onItemValueChange = {},onSaveClick = {}, onDelete = {}, showDeleteButton = false)
     }
