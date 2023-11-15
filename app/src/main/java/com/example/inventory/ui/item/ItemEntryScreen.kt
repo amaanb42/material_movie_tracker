@@ -54,13 +54,21 @@ import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
-import com.example.inventory.ui.theme.theme_delete_button
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.remember
 import android.widget.Toast
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.alpha
 
 
 object ItemEntryDestination : NavigationDestination {
@@ -159,7 +167,10 @@ fun ItemEntryBody(
             onClick = onSaveClick,
             enabled = itemUiState.isEntryValid,
             shape = roundedCornerShape,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 96.dp)
+                .padding(top = 16.dp),
         ) {
             Text(text = stringResource(R.string.save_action))
         }
@@ -168,7 +179,9 @@ fun ItemEntryBody(
                 onClick = { deleteConfirmationRequired = true },
                 enabled = itemUiState.isEntryValid,
                 shape = roundedCornerShape,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 96.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 96.dp),
                 colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.onError)
             ) {
                 Text(text = stringResource(R.string.delete))
@@ -203,7 +216,12 @@ fun ItemInputForm(
             value = itemDetails.title,
             onValueChange = { onValueChange(itemDetails.copy(title = it)) },
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-            label = { Text(stringResource(R.string.item)) },
+            label = {
+                Text(
+                    text = stringResource(R.string.item),
+                    modifier = Modifier.alpha(0.65f) // Apply alpha here
+                )
+            },
 //            colors = OutlinedTextFieldDefaults.colors(
 //                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
 //                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -218,12 +236,52 @@ fun ItemInputForm(
             value = itemDetails.rating,
             onValueChange = { onValueChange(itemDetails.copy(rating = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = { Text(stringResource(R.string.item_price_req)) },
+            label = {
+                Text(
+                    text = "Rating (i.e. 8 or 8.5)",
+                    modifier = Modifier.alpha(0.65f) // Apply alpha here
+                )
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = roundedCornerShape,
             enabled = enabled,
             singleLine = true
         )
+        CustomSwitchWithText()
+    }
+}
+
+
+@Composable
+fun CustomSwitchWithText() {
+    var checked by remember { mutableStateOf(false) }
+
+    val icon: (@Composable () -> Unit)? = if (checked) {
+        {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null,
+                modifier = Modifier.size(SwitchDefaults.IconSize),
+                tint = MaterialTheme.colorScheme.primary // Adjust the tint color if needed
+            )
+        }
+    } else {
+        null
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Switch(
+            modifier = Modifier.size(50.dp, 25.dp), // Adjust size for better visibility
+            checked = checked,
+            onCheckedChange = { checked = it },
+            thumbContent = icon
+        )
+
+        Text("Watched", modifier = Modifier.padding(start = 8.dp))
+
     }
 }
 

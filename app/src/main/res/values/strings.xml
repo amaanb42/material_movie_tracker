@@ -21,11 +21,10 @@
     <string name="delete_question">Are you sure you want to remove this movie?</string>
     <string name="no_item_description">Nothing to see here.\nTap + to add movies!</string>
     <string name="edit_item_title">Edit Movie</string>
-    <string name="item">Movie</string>
+    <string name="item">Title</string>
     <string name="item_entry_title">Add Movie</string>
-    <string name="item_price_req">Rating</string>
     <string name="no">No</string>
-    <string name="price">Price</string>
+    <string name="rating">Rating</string>
     <string name="save_action">Save</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>

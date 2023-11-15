@@ -98,8 +98,8 @@ fun HomeScreen(
             FloatingActionButton(
                 onClick = navigateToItemEntry,
                 shape = RoundedCornerShape(16.dp),
-                //containerColor = Pine,
-                //contentColor = Text100,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
@@ -107,7 +107,7 @@ fun HomeScreen(
                     contentDescription = stringResource(R.string.item_entry_title)
                 )
             }
-        },
+        }
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
