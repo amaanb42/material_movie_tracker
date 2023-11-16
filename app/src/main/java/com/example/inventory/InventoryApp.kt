@@ -87,7 +87,7 @@ fun InventoryTopSearchBar(
     navigateUp: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             // Centering the search bar
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -97,6 +97,7 @@ fun InventoryTopSearchBar(
                     onValueChange = onSearchQueryChanged,
                     modifier = Modifier
                         .height(48.dp) // Adjust height as needed
+                        .fillMaxWidth(0.90f)
                         .clip(RoundedCornerShape(8.dp)), // Rounded corners
                     placeholderText = "Search Your List",
                     trailingIcon = {
