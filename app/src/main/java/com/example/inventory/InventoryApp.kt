@@ -44,10 +44,17 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -56,6 +63,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.ui.navigation.InventoryNavHost
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 
 /**
  * Top level composable that represents screens for the application.
@@ -117,6 +126,7 @@ fun InventoryTopSearchBar(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     value: String,
@@ -127,22 +137,49 @@ fun SearchBar(
     singleLine: Boolean = true
 ) {
     val commonTextStyle = TextStyle(
-        // Add other styling properties as needed, e.g., fontFamily, fontWeight, etc.
         fontSize = 14.sp,
+        // Add other styling properties as needed
     )
+
+    // Get the keyboard controller and focus manager
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
+    var clearTextField by remember { mutableStateOf(false) }
+
+    // Use LaunchedEffect to control the order of operations
+    LaunchedEffect(clearTextField) {
+        if (clearTextField) {
+            onValueChange("")
+            focusManager.clearFocus()
+            keyboardController?.hide()
+            clearTextField = false
+        }
+    }
+
     TextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        textStyle = commonTextStyle, // Adjust the font size as needed
-        placeholder = { Text(text = placeholderText, style = commonTextStyle) }, // Ensure the placeholder has the same style
+        textStyle = commonTextStyle,
+        placeholder = { Text(text = placeholderText, style = commonTextStyle) },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Filled.Search,
                 contentDescription = "Search Icon"
             )
         },
-        trailingIcon = trailingIcon,
+        trailingIcon = {
+            if (trailingIcon != null) {
+                trailingIcon()
+            } else if (value.isNotEmpty()) {
+                IconButton(onClick = {
+                    clearTextField = true
+                }) {
+                    Icon(Icons.Filled.Clear, contentDescription = "Clear")
+                }
+            }
+        },
         singleLine = singleLine,
         shape = RoundedCornerShape(8.dp),
         colors = TextFieldDefaults.colors(
@@ -153,6 +190,8 @@ fun SearchBar(
         )
     )
 }
+
+
 
 
 
