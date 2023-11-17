@@ -20,6 +20,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -85,8 +86,8 @@ fun InventoryTopSearchBar(
                     value = searchQuery,
                     onValueChange = onSearchQueryChanged,
                     modifier = Modifier
-                        .height(48.dp) // Adjust height as needed
-                        .fillMaxWidth(0.90f)
+                        .height(54.dp) // Adjust height as needed
+                        .fillMaxWidth(0.85f)
                         .clip(RoundedCornerShape(8.dp)), // Rounded corners
                     placeholderText = "Search Your List",
                     trailingIcon = {
@@ -127,7 +128,7 @@ fun SearchBar(
     singleLine: Boolean = true
 ) {
     val commonTextStyle = TextStyle(
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         // Add other styling properties as needed
     )
 
@@ -171,7 +172,7 @@ fun SearchBar(
             }
         },
         singleLine = singleLine,
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(30.dp),
         colors = TextFieldDefaults.colors(
             cursorColor = MaterialTheme.colorScheme.onSurface,
             focusedIndicatorColor = Color.Transparent,
