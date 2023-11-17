@@ -145,20 +145,20 @@ fun SearchBar(
     )
 
     // Get the keyboard controller and focus manager
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
+//    val keyboardController = LocalSoftwareKeyboardController.current
+//    val focusManager = LocalFocusManager.current
 
     var clearTextField by remember { mutableStateOf(false) }
 
     // Use LaunchedEffect to control the order of operations
-    LaunchedEffect(clearTextField) {
-        if (clearTextField) {
-            onValueChange("")
-            focusManager.clearFocus()
-            keyboardController?.hide()
-            clearTextField = false
-        }
-    }
+//    LaunchedEffect(clearTextField) {
+//        if (clearTextField) {
+//            onValueChange("")
+//            focusManager.clearFocus()
+//            keyboardController?.hide()
+//            clearTextField = false
+//        }
+//    }
 
     TextField(
         value = value,
