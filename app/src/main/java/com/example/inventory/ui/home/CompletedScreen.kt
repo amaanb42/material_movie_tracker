@@ -46,6 +46,8 @@ import com.example.inventory.data.Item
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,11 +67,14 @@ object CompletedDestination : NavigationDestination {
 fun CompletedScreen(
     navigateToEditItem: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    navigateToItemEntry: () -> Unit,
     viewModel: CompletedViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val completedUiState by viewModel.completedUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var searchQuery by remember { mutableStateOf("") }
+    val listState = rememberLazyListState()
+
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -82,6 +87,12 @@ fun CompletedScreen(
                 scrollBehavior = scrollBehavior
             )
         },
+        floatingActionButton = {
+            AnimatedFloatingActionButton(
+                listState = listState,
+                navigateToItemEntry = navigateToItemEntry
+            )
+        }
     ) { innerPadding ->
         CompletedBody(
             itemList = completedUiState.itemList.filter {
@@ -89,6 +100,7 @@ fun CompletedScreen(
             },
             searchQuery = searchQuery,
             onItemClick = navigateToEditItem,
+            listState = listState,
             modifier = modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -98,7 +110,7 @@ fun CompletedScreen(
 
 @Composable
 private fun CompletedBody(
-    itemList: List<Item>, searchQuery: String, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Item>, searchQuery: String, onItemClick: (Int) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
 ) {
     // Filter items based on search query and isWatched status
     val filteredItems = itemList.filter {
@@ -125,6 +137,7 @@ private fun CompletedBody(
             CompletedInventoryList(
                 itemList = itemList,
                 onItemClick = { onItemClick(it.id) },
+                listState = listState,
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
                     .padding(bottom = 80.dp)
@@ -136,9 +149,10 @@ private fun CompletedBody(
 
 @Composable
 private fun CompletedInventoryList(
-    itemList: List<Item>, onItemClick: (Item) -> Unit, modifier: Modifier = Modifier
+    itemList: List<Item>, onItemClick: (Item) -> Unit, listState: LazyListState, modifier: Modifier = Modifier
 ) {
     LazyColumn(
+        state = listState,
         modifier = modifier,
         contentPadding = PaddingValues(
             top = dimensionResource(id = R.dimen.padding_small), // Add top padding
@@ -157,8 +171,6 @@ private fun CompletedInventoryList(
         }
     }
 }
-
-
 
 
 
