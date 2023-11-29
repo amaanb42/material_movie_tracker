@@ -17,6 +17,8 @@
 package com.example.inventory.ui.item
 
 import android.content.Context
+import android.os.VibrationEffect
+import android.os.Vibrator
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -88,6 +90,7 @@ fun ItemEntryScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val vibrator = context.getSystemService(Vibrator::class.java)
     var showToast by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -109,6 +112,7 @@ fun ItemEntryScreen(
                 if (!isRatingValid(viewModel.itemUiState.itemDetails.rating)) {
                     showToast = true
                 } else {
+                    vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
                     coroutineScope.launch {
                         viewModel.saveItem()
                         navigateBack()
