@@ -51,7 +51,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopSearchBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
