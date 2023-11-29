@@ -338,6 +338,9 @@ fun isRatingValid(rating: String): Boolean {
     else if(rating.contains(',')) {
         return false
     }
+    else if(rating.count{ it == '.' } > 1) {
+        return false
+    }
     val numericRating = rating.toDouble()
     return numericRating in 1.0..10.0
 }
