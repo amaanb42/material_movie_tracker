@@ -332,6 +332,9 @@ private fun ItemEntryScreenPreview() {
 fun isRatingValid(rating: String): Boolean {
     if (rating == "")
         return true
+    else if(rating.contains(',')) {
+        return false
+    }
     val numericRating = rating.toDouble()
     return numericRating in 1.0..10.0
 }
