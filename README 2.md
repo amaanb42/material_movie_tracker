@@ -26,4 +26,4 @@ You need to know:
 Getting Started
 ---------------
 
-1. Download and run the app. tests
+1. Download and run the app.
