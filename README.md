@@ -1,3 +1,5 @@
 # Movie Tracker
 - Android app to track and rate movies using Room database.
-![alt text](screenshots/image0.png) ![alt text](screenshots/image1.png) 
+
+<img src="screenshots/image0.png" alt="drawing" width="200"/>
+<img src="screenshots/image1.png" alt="drawing" width="200"/>
